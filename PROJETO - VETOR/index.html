@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,19 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 </head>
+
 <body>
     <section class="all" id="inicio">
         <div class="container">
             <div class="game">
-                <img src="https://static.wikia.nocookie.net/dublagem/images/6/62/Shrek-Logo.png/revision/latest/scale-to-width-down/1200?cb=20250322121610&path-prefix=pt-br">
+                <img
+                    src="https://static.wikia.nocookie.net/dublagem/images/6/62/Shrek-Logo.png/revision/latest/scale-to-width-down/1200?cb=20250322121610&path-prefix=pt-br">
                 <div class="text">
-                <p>Jogo no Estilo Campo Minado</p>
-                <p>Encontre todas as Cebolas e Fuja do Lorde Vaquard</p>
-                <p>Clique em Começar Quando Estiver Pronto</p>
-            </div>
-            <button class="btn-start" onclick="comecar()">Começar</button>
+                    <p>Jogo no Estilo Campo Minado</p>
+                    <p>Encontre todas as Cebolas e Fuja do Lorde Vaquard</p>
+                    <p>Clique em Começar Quando Estiver Pronto</p>
+                </div>
+                <button class="btn-start" onclick="comecar()">Começar</button>
             </div>
         </div>
     </section>
@@ -25,9 +28,140 @@
     <section class="jogo" id="jogo">
         <div class="container">
             <div class="itens">
-
+                <div id="timer"></div>
+                <div id="div_vidas"></div>
+                <div class="container-all">
+                    <select name="" id="" onchange="gerarMatriz(this.value)">
+                        <option value="5">Fácil</option>
+                        <option value="10">Médio</option>
+                        <option value="15">Impossível</option>
+                    </select>
+                    <div id="resposta"></div>
+                </div>
             </div>
         </div>
     </section>
 </body>
+<script>
+    let vidas = 3
+
+    window.onload = funcaoVidas()
+
+    function funcaoVidas(valor) {
+        div_vidas.innerHTML = ``
+
+        for (i = 0; i < vidas; i++) {
+            div_vidas.innerHTML += `
+        <img src="https://img.itch.zone/aW1nLzI3MzE5NjMucG5n/315x250%23c/IzAfU2.png">
+        `
+        }
+    }
+
+    function comecar() {
+        let inicio = document.getElementById('inicio');
+        inicio.style.display = 'none';
+        let jogo = document.getElementById('jogo');
+        jogo.style.display = 'block';
+
+        var segundos = 1
+        var minutos = 0
+
+        const intervalId = setInterval(() => {
+
+
+            if (segundos > 59) {
+                segundos = 0
+                minutos++
+            }
+
+            if (segundos <= 9) {
+                timer.innerHTML = `<p id='tempo'>${minutos}:0${segundos}</p>`
+            } else {
+                timer.innerHTML = `<p id='tempo'>${minutos}:${segundos}</p>`
+            }
+
+
+            segundos++
+        }, 1000);
+        gerarMatriz(5);
+    }
+
+    function gerarMatriz(valor) {
+        let valorTamanho = Number(valor);
+        let matriz = []
+        let linhas = valorTamanho;
+        let colunas = valorTamanho;
+        let tesouros = 0;
+        let totalBombas = 0
+        let indicesBomba;
+        if (valorTamanho == 5) {
+            totalBombas = 2;
+            tesouros = 10
+        } else if (valorTamanho == 10) {
+            totalBombas = 5
+            tesouros = 8
+        } else {
+            totalBombas = 8
+            tesouros = 3
+        }
+
+        let divMatriz = ``
+        let totalBlocos = -1;
+        for (let linha = 0; linha < linhas; linha++) {
+            matriz[linha] = []
+            for (let coluna = 0; coluna < colunas; coluna++) {
+                let situacao = (Math.random() * 3).toFixed();
+                if (situacao == 0) {
+                    situacao = "N"
+                } else if (situacao == 1) {
+                    situacao = "D"
+                } else {
+                    if (tesouros == 0) {
+                        situacao = "D"
+                    } else {
+                        situacao = "V"
+                        tesouros--
+                    }
+                }
+                matriz[linha][coluna] = situacao
+                totalBlocos++;
+                divMatriz += `
+                    <div class="blocos" onclick="verificarResposta(this.innerText, ${totalBlocos})">${matriz[linha][coluna]}</div>
+                `
+            }
+        }
+        resposta.style.gridTemplateColumns = `repeat(${valor}, 1fr)`
+        resposta.innerHTML = `
+        ${divMatriz}
+        `
+    }
+    let erros = 0;
+
+    function verificarResposta(valor, indice) {
+        const allBlocos = document.getElementsByClassName('blocos');
+        if (!allBlocos[indice].disabled) {
+            if (valor == "N") {
+                allBlocos[indice].style.zIndex = -1
+            } else if (valor == "V") {
+                allBlocos[indice].style.backgroundColor = "green";
+
+            } else {
+                allBlocos[indice].style.backgroundColor = "red";
+                erros++;
+                funcaoVidas(vidas--)
+                
+                
+                if (erros == 3) {
+                    alert('Perdeu seu Ogro!!');
+                    window.location.href = 'index.html'
+                }
+            }
+        }
+        allBlocos[indice].style.color = "black"
+        allBlocos[indice].disabled = true;
+
+    }
+
+</script>
+
 </html>
