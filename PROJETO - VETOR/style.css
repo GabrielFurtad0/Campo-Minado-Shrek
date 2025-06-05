@@ -1,0 +1,76 @@
+.container{
+    padding: 2% 60px;
+}
+section.all h1{
+    font-size: 60px;
+}
+section.all .container{
+    justify-items: center;
+    align-items: center;
+}
+body{
+    background-image: url('https://cdn.mensagenscomamor.com/content/images/m000532383.jpg?v=1&w=1440&h=750');
+    background-size: cover;
+}
+.game{
+    background-color: rgba(0, 128, 0, 0.616);
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 20px;
+    margin-top: 50px;
+    justify-items: center;
+}
+.game img{
+    max-width: 700px;
+    margin-left: 20px;
+    margin-top: -40px;
+}
+.game p{
+    font-size: 40px;
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px green;
+}
+.text{
+    margin-top: -40px;
+}
+.btn-start{
+    width: 500px;
+    height: 80px;
+    font-size: 30px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    animation: botao 2s linear infinite;
+}
+.btn-start:hover{
+    background-color: white;
+    color: green;
+}
+@keyframes botao {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+/* SECTION JOGO */
+section.jogo{
+    justify-items: center;
+    display: none;
+}
+section.jogo .itens{
+    width: 1400px;
+    height: 90vh;
+    background-color: rgba(0, 128, 0, 0.616);
+    border-radius: 20px;
+    border: solid 1px white;
+}
