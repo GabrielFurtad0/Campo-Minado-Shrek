@@ -11,8 +11,8 @@
         <img src="img/download.png" alt="Logo Shrek" class="shrek-logo">
         <h2>Bem-vindo ao Pântano!</h2>
         <form>
-            <label for="email">Nome do ogro:</label>
-            <input type="text" id="email" name="email" required>
+            <label for="nome">Nome do ogro:</label>
+            <input type="text" id="nome" name="nome" required>
 
             <label for="senha">Senha secreta:</label>
             <input type="password" id="senha" name="senha" required>
@@ -26,22 +26,11 @@
 
 
     function entrar() {
-        
 
-        const emailVar = email.value;
+        const nomeVar = nome.value;
         const senhaVar = senha.value;
 
-        if (emailVar == "" || senhaVar == "") {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            
-            return false;
-        }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
-
-        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM LOGIN: ", nomeVar);
         console.log("FORM SENHA: ", senhaVar);
 
         fetch("/usuarios/autenticar", {
@@ -50,8 +39,8 @@
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
+                'nomeServer': nomeVar,
+                'senhaServer': senhaVar
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -62,14 +51,13 @@
                 resposta.json().then(json => {
                     console.log(json);
                     console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
+            
 
-                    setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
-                    }, 1000); // apenas para exibir o loading
+                    
+                        window.location = "./PROJETO - VETOR/index.html";
+                    
 
                 });
 
@@ -88,10 +76,6 @@
         })
 
         return false;
-    }
-
-    function sumirMensagem() {
-        cardErro.style.display = "none"
     }
 
 </script>
