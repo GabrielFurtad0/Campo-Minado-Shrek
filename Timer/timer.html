@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #timer{
+        background-color: white;
+        color: green;
+        border: solid;
+        width: 100px;
+        height: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 30px;
+    }
+
+    #tempo{
+        font-size: 40px;
+    }
+</style>
+<body>
+    <div id="timer"></div>
+</body>
+<script>
+    var segundos = 1
+    var minutos = 0
+
+ const intervalId = setInterval(() => {
+ 
+
+   if(segundos>59){
+    segundos = 0
+    minutos++
+   }
+
+   if(segundos<=9){
+    timer.innerHTML=`<p id='tempo'>${minutos}:0${segundos}</p>`
+   }else{
+    timer.innerHTML=`<p id='tempo'>${minutos}:${segundos}</p>`
+   }
+
+   
+   segundos++
+}, 1000);
+
+
+</script>
+</html>
