@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body,html {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            left: 0;
+            overflow: auto;
+            scrollbar-width: none;
+        }
+        .container-all {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid black;
+            background-color: gray;
+        }
+        #resposta {
+            display: grid;
+            flex-wrap: wrap;
+            width: 100%;
+            height: 100%;
+            gap: 1.5px
+        
+        }
+        .blocos {
+            background-color: rgba(117, 179, 77, 0.719);
+            border: 1px solid black;
+            width: 40px;
+            height: 40px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-all">
+        <select name="" id="" onchange="gerarMatriz(this.value)">
+            <option value="5">Fácil</option>
+            <option value="10">Médio</option>
+            <option value="15">Dificil</option>
+        </select>        
+        <div id="resposta"></div>
+    </div>
+</body>
+<script>
+    function gerarMatriz(valor) {
+        let valorTamanho = Number(valor);
+        let matriz = []
+        let linhas = valorTamanho;
+        let colunas = valorTamanho;
+        let tesouros = 0;   
+        let totalBombas = 0
+        let indicesBomba;
+        if(valorTamanho == 5) {
+            totalBombas = 2;
+            tesouros = 10
+        } else if(valorTamanho == 10) {
+            totalBombas = 5
+            tesouros = 8
+        } else {
+            totalBombas = 8
+            tesouros = 3
+        }
+
+        let divMatriz = ``
+        let totalBlocos = -1;
+        for(let linha=0;linha<linhas;linha++) {
+            matriz[linha] = []
+            for(let coluna =0;coluna<colunas;coluna++) {
+                let situacao = (Math.random() * 3).toFixed();
+                if(situacao == 0) {
+                    situacao = "N"
+                } else if(situacao == 1) {
+                    situacao = "D"
+                } else {
+                    if(tesouros == 0) {
+                        situacao = "D"
+                    } else {
+                        situacao = "V"
+                        tesouros--
+                    }
+                }
+                matriz[linha][coluna] = situacao
+                totalBlocos++;
+                divMatriz+=`
+                    <div class="blocos" onclick="verificarResposta(this.innerText, ${totalBlocos})">${matriz[linha][coluna]}</div>
+                `
+            }
+        }
+        resposta.style.gridTemplateColumns = `repeat(${valor}, 1fr)`
+        resposta.innerHTML=`
+        ${divMatriz}
+        `
+    }
+
+    function verificarResposta(valor, indice) {
+        const allBlocos = document.getElementsByClassName('blocos');
+        if(!allBlocos[indice].disabled) {
+           if(valor == "N") {
+                allBlocos[indice].style.zIndex = -1
+            } else if(valor == "V") {
+                allBlocos[indice].style.backgroundColor = "green"
+            } else {
+                allBlocos[indice].style.backgroundColor = "red"
+            }
+        }
+        allBlocos[indice].style.color = "black"
+        allBlocos[indice].disabled = true;
+
+    }
+</script>
+</html>
